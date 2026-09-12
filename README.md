@@ -1,4 +1,4 @@
-# <Project Name>
+# Rental360 - Rental Management System
 
 > Replace every angle-bracket placeholder below. The hygiene check in CI will
 > fail until you do.
@@ -7,17 +7,17 @@
 
 | Roll No. | Name | GitHub username |
 |---|---|---|
-| <roll> | <name> | <username> |
+| 24ESKCS137 | Govind Kumar | notgovindkumar |
 
 ## About
 
-<Two or three sentences on what this application does.>
+Rental 360 is a rental property management system designed for small property owners to manage rooms, tenants, occupancy, rent collection, electricity billing, and payment records from a single platform. It helps automate daily rental operations, track room availability, monitor revenue, and maintain tenant information efficiently.
 
 ## Tech stack
 
-- Frontend: <e.g. React>
-- Backend: <e.g. Node.js / Express>
-- Database: <e.g. PostgreSQL>
+- Frontend: React
+- Backend: Node.js
+- Database: MongoDB
 
 ## Running locally
 
@@ -28,7 +28,7 @@ make run
 
 ## Live URL
 
-<Add once M5 is done. Until then, leave as is.>
+notgovindkumar.github.io/Rental360/
 
 ## Health endpoint
 
