@@ -1,0 +1,10 @@
+
+services:
+  rental360:
+    build:
+      context: .
+      args:
+        GIT_SHA: ${GIT_SHA:-local}
+    ports:
+      - "8081:3000"
+    restart: unless-stopped
