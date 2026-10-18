@@ -1,3 +1,4 @@
+
 .PHONY: install test build run docker-build docker-up
 
 install:
@@ -10,10 +11,10 @@ build:
 	@echo "Build successful"
 
 run:
-	@echo "Open index.html in browser"
+	@echo "Open http://localhost:8081 in your browser"
 
 docker-build:
-	@echo "Docker build placeholder"
+	docker compose build
 
 docker-up:
-	docker compose up --build
+	docker compose up --build -d
