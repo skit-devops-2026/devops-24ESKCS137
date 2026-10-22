@@ -27,12 +27,12 @@ function request(path) {
 }
 
 async function waitForServer() {
-  for (let attempt = 0; attempt < 20; attempt++) {
+  for (let attempt = 0; attempt < 40; attempt++) {
     try {
       await request("/health");
       return;
     } catch {
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
   throw new Error("server did not start");
