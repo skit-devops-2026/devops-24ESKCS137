@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rental360
+  labels:
+    app.kubernetes.io/name: rental360
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rental360
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rental360
+    spec:
+      containers:
+        - name: rental360
+          image: ghcr.io/skit-devops-2026/devops-24eskcs137:0ddb6f5a479509c465930adf51972f0b1ffd9a49
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "3000"
+            - name: GIT_SHA
+              value: "0ddb6f5a479509c465930adf51972f0b1ffd9a49"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

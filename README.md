@@ -53,3 +53,14 @@ The CI image is tagged and built with the GitHub commit SHA. Render deployments
 can use that image tag, or build this Dockerfile directly; the application also
 reads Render's `RENDER_GIT_COMMIT` runtime value when no `GIT_SHA` build
 argument is supplied.
+
+## Kubernetes deployment
+
+The M7 manifests in `k8s/` deploy the commit-tagged image with health probes
+and expose it internally through a ClusterIP service:
+
+```bash
+kubectl apply -f k8s/deployment.yaml -f k8s/service.yaml
+kubectl rollout status deployment/rental360
+kubectl get service rental360
+```
