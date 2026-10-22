@@ -35,4 +35,21 @@ notgovindkumar.github.io/Rental360/
 `GET /health` returns the running commit SHA. See `Makefile` and the milestone
 sheet for why this is required.
 
-one line
+## Monitoring
+
+Start the application first, then start the monitoring stack:
+
+```bash
+GIT_SHA=$(git rev-parse HEAD) docker compose up --build -d
+docker compose -f docker-compose.monitoring.yml up -d
+```
+
+Prometheus is available at `http://localhost:9090` and Grafana at
+`http://localhost:3001`. The Prometheus target scrapes the application at
+`http://rental360:3000/metrics`. Grafana provisions that data source and a
+dashboard containing request and HTTP 404 panels automatically.
+
+The CI image is tagged and built with the GitHub commit SHA. Render deployments
+can use that image tag, or build this Dockerfile directly; the application also
+reads Render's `RENDER_GIT_COMMIT` runtime value when no `GIT_SHA` build
+argument is supplied.

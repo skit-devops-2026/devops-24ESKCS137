@@ -1,0 +1,12 @@
+apiVersion: 1
+
+providers:
+  - name: Rental360
+    orgId: 1
+    folder: Rental360
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 30
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards

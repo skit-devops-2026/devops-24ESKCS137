@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const PORT = process.env.PORT || 3000;
-const COMMIT_SHA = process.env.GIT_SHA || "local";
+const COMMIT_SHA = process.env.GIT_SHA || process.env.RENDER_GIT_COMMIT || "local";
 
 let requests = 0;
 let errors = 0;
