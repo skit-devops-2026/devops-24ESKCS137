@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY server.js index.html ./
 
-ARG GIT_SHA=local
+ARG GIT_SHA
 ENV GIT_SHA=${GIT_SHA}
 ENV PORT=3000
 

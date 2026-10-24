@@ -72,6 +72,8 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/skit-devops-2026/devops-24eskcs137:${{ github.sha }}
+          build-args: |
+            GIT_SHA=${{ github.sha }}
 
   # ---------------------------------------------------------------------------
   # M5 — Deployment. Add a deploy job here.
