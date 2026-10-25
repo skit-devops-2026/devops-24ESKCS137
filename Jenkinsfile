@@ -1,32 +1,32 @@
-pipeline {
+﻿pipeline {
     agent any
 
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out source code...'
+                checkout scm
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                bat '"C:\\Program Files\\Git\\bin\\bash.exe" test/test.sh'
             }
         }
 
-        stage('Build') {
+        stage('Docker Build') {
             steps {
-                echo 'Building application...'
+                bat 'docker build --build-arg GIT_SHA=%GIT_COMMIT% -t rental360:%BUILD_NUMBER% .'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully'
+            echo 'Tests passed and Docker image built successfully.'
         }
         failure {
-            echo 'Pipeline failed'
+            echo 'Pipeline failed. Check the stage logs.'
         }
     }
 }
