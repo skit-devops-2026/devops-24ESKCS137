@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rental360
-          image: ghcr.io/skit-devops-2026/devops-24eskcs137:0ddb6f5a479509c465930adf51972f0b1ffd9a49
+          image: rental360-api:local
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -26,10 +26,20 @@ spec:
             - name: PORT
               value: "3000"
             - name: GIT_SHA
-              value: "0ddb6f5a479509c465930adf51972f0b1ffd9a49"
+              value: "51cb8e6cce65408b60106ddad406f196211617bb"
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: rental360-secrets
+                  key: mongodb-uri
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: rental360-secrets
+                  key: jwt-secret
           readinessProbe:
             httpGet:
-              path: /health
+              path: /ready
               port: http
             initialDelaySeconds: 2
             periodSeconds: 10

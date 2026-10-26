@@ -5,6 +5,36 @@ services:
       context: .
       args:
         GIT_SHA: ${GIT_SHA:?GIT_SHA must be set to the image source commit}
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/rental360
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
+      CLIENT_URL: http://localhost:8081
     ports:
       - "8081:3000"
     restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - rental360-mongo:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8081/api/v1
+    ports:
+      - "5173:80"
+    depends_on:
+      - rental360
+
+volumes:
+  rental360-mongo:
