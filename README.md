@@ -16,15 +16,44 @@ Rental 360 is a rental property management system designed for small property ow
 ## Tech stack
 
 - Frontend: React
-- Backend: Node.js
-- Database: MongoDB
+- Frontend tooling: Vite
+- Backend: Node.js and Express
+- Database: MongoDB with Mongoose
+- Authentication: JWT and bcrypt
 
 ## Running locally
 
 ```bash
 make install
-make run
+cp .env.example .env
+docker compose up --build
 ```
+
+The API is available at `http://localhost:8081`, the Vite development server at
+`http://localhost:5173`, and MongoDB at `mongodb://localhost:27017/rental360`.
+For a local non-container workflow, start MongoDB, run `make install`, then run
+`npm --prefix backend run dev` and `npm --prefix frontend run dev`.
+
+Seed clearly identified demo data with:
+
+```bash
+make seed
+```
+
+The demo account is `demo@rental360.local` with password
+`DemoPassword123!`. Change it immediately outside local demonstrations.
+
+## API
+
+The authenticated REST API is under `/api/v1`. Authentication endpoints are
+`POST /api/v1/auth/register`, `POST /api/v1/auth/login`, and
+`GET /api/v1/auth/me`. Core resources expose REST CRUD endpoints for
+`properties`, `units`, `tenants`, `leases`, `invoices`, `payments`,
+`utilities`, and `maintenance`. Dashboard data is available from
+`GET /api/v1/dashboard`, and aggregate reporting from
+`GET /api/v1/reports/summary`. Authorized users can run the predefined
+maintenance automations with `POST /api/v1/automations/run`; this marks unpaid
+past-due invoices as overdue and synchronizes unit occupancy from active leases.
 
 ## Live URL
 
@@ -32,8 +61,10 @@ notgovindkumar.github.io/Rental360/
 
 ## Health endpoint
 
-`GET /health` returns the running commit SHA. See `Makefile` and the milestone
-sheet for why this is required.
+`GET /health` returns the running commit SHA and database status. `GET /ready`
+is the database-aware readiness endpoint. `GET /metrics` exposes Prometheus
+request counters, error counters, latency histograms, and default process
+metrics.
 
 ## Monitoring
 
@@ -64,3 +95,12 @@ kubectl apply -f k8s/deployment.yaml -f k8s/service.yaml
 kubectl rollout status deployment/rental360
 kubectl get service rental360
 ```
+
+The API deployment expects a separately managed MongoDB and the keys shown in
+`k8s/secret.example.yaml`; copy that example into a private cluster secret and
+replace its placeholders. The manifests use local image names
+(`rental360-api:local` and `rental360-frontend:local`) so they do not depend on
+an inaccessible private registry. Build and load those images into the target
+cluster (or change the image references to your authenticated registry) before
+deployment. The frontend image can be deployed with
+`k8s/frontend-deployment.yaml`.

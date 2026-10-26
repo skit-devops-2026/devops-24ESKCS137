@@ -15,6 +15,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
       - name: Run hygiene checks
         run: bash scripts/hygiene.sh
 
@@ -33,13 +41,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-  
-      # Set up whichever runtime you need, for example:
-      # - uses: actions/setup-node@v4
-      #   with: { node-version: '20', cache: 'npm' }
-      # - uses: actions/setup-python@v5
-      #   with: { python-version: '3.12' }
-  
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
       - run: make install
       - run: make test
       - run: make build
@@ -74,6 +84,14 @@ jobs:
           tags: ghcr.io/skit-devops-2026/devops-24eskcs137:${{ github.sha }}
           build-args: |
             GIT_SHA=${{ github.sha }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: ghcr.io/skit-devops-2026/devops-24eskcs137-frontend:${{ github.sha }}
+          build-args: |
+            VITE_API_URL=/api/v1
 
   # ---------------------------------------------------------------------------
   # M5 — Deployment. Add a deploy job here.

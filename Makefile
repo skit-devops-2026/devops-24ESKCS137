@@ -1,17 +1,22 @@
 
-.PHONY: install test build run docker-build docker-up
+.PHONY: install test build run docker-build docker-up seed
 
 install:
-	@echo "No dependencies required"
+	npm --prefix backend ci
+	npm --prefix frontend ci
 
 test:
-	bash test/test.sh
+	npm --prefix backend test
+	node test/test.js
 
 build:
-	@echo "Build successful"
+	npm --prefix frontend run build
 
 run:
-	@echo "Open http://localhost:8081 in your browser"
+	npm --prefix backend run dev
+
+seed:
+	npm --prefix backend run seed
 
 docker-build:
 	docker compose build

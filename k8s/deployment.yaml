@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rental360
-          image: rental360:local
+          image: rental360-api:local
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -27,9 +27,19 @@ spec:
               value: "3000"
             - name: GIT_SHA
               value: "51cb8e6cce65408b60106ddad406f196211617bb"
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: rental360-secrets
+                  key: mongodb-uri
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: rental360-secrets
+                  key: jwt-secret
           readinessProbe:
             httpGet:
-              path: /health
+              path: /ready
               port: http
             initialDelaySeconds: 2
             periodSeconds: 10
@@ -46,4 +56,3 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
-
