@@ -57,7 +57,12 @@ past-due invoices as overdue and synchronizes unit occupancy from active leases.
 
 ## Live URL
 
-notgovindkumar.github.io/Rental360/
+The configured Render URL is `https://devops-24eskcs137.onrender.com`.
+As of 2026-10-26, `GET /health` responds with HTTP 200, but `/metrics`
+responds with HTTP 404 and the response reports `commit: local`; this indicates
+the hosted service is still running the legacy image rather than the current
+MERN deployment. See [docs/verification-2026-10-26.md](docs/verification-2026-10-26.md)
+for the evidence and local verification status.
 
 ## Health endpoint
 
